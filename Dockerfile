@@ -1,5 +1,5 @@
 # Java 17 için uygun OpenJDK sürümünü kullan
-FROM eclipse-temurin:21-jdk-slim
+FROM eclipse-temurin:17-jdk-slim
 
 # Çalışma dizinini ayarla
 WORKDIR /app
