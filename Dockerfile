@@ -1,5 +1,5 @@
 # Java 17 için uygun OpenJDK sürümünü kullan
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:17-jdk-slim
 
 # Çalışma dizinini ayarla
 WORKDIR /app
@@ -14,4 +14,4 @@ RUN chmod +x ./mvnw
 RUN ./mvnw clean package -DskipTests
 
 # Uygulamayı çalıştır
-CMD ["java", "-jar", "target/besinhastalikapi-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/legalchecker-0.0.1-SNAPSHOT.jar"]
