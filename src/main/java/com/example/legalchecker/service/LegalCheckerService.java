@@ -2,6 +2,8 @@ package com.example.legalchecker.service;
 
 import com.example.legalchecker.dto.LegalCheckResultDTO;
 import org.springframework.stereotype.Service;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @Service
 public class LegalCheckerService {
@@ -15,7 +17,7 @@ public class LegalCheckerService {
     private final BrandCheckService brandCheckService;
     private final GdprKvkkService gdprKvkkService;
 
-    // Constructor
+    // Constructor injection
     public LegalCheckerService(
             CookiePolicyService cookiePolicyService,
             PrivacyPolicyService privacyPolicyService,
@@ -37,25 +39,33 @@ public class LegalCheckerService {
     }
 
     public LegalCheckResultDTO checkUrl(String url) {
-        boolean hasCookiePolicy = cookiePolicyService.checkCookiePolicy(url);
-        boolean hasPrivacyPolicy = privacyPolicyService.checkPrivacyPolicy(url);
-        boolean hasTerms = termsOfService.checkTermsOfService(url);
-        boolean isSslValid = sslService.checkSsl(url);
-        boolean hasContactInfo = contactInfoService.checkContactInfo(url);
-        boolean hasCopyright = copyrightService.checkCopyrightInfo(url);
-        boolean hasBrandInfo = brandCheckService.checkBrandInfo(url);
-        boolean hasGdprKvkkCompliance = gdprKvkkService.checkGdprKvkkCompliance(url);
+        try {
+            // Validate URL
+            new URL(url);
 
-        return new LegalCheckResultDTO(
-                url,
-                hasCookiePolicy,
-                hasPrivacyPolicy,
-                hasTerms,
-                isSslValid,
-                hasContactInfo,
-                hasCopyright,
-                hasBrandInfo,
-                hasGdprKvkkCompliance
-        );
+            // Perform checks
+            boolean hasCookiePolicy = cookiePolicyService.checkCookiePolicy(url);
+            boolean hasPrivacyPolicy = privacyPolicyService.checkPrivacyPolicy(url);
+            boolean hasTerms = termsOfService.checkTermsOfService(url);
+            boolean isSslValid = sslService.checkSsl(url);
+            boolean hasContactInfo = contactInfoService.checkContactInfo(url);
+            boolean hasCopyright = copyrightService.checkCopyrightInfo(url);
+            boolean hasBrandInfo = brandCheckService.checkBrandInfo(url);
+            boolean hasGdprKvkkCompliance = gdprKvkkService.checkGdprKvkkCompliance(url);
+
+            return new LegalCheckResultDTO(
+                    url,
+                    hasCookiePolicy,
+                    hasPrivacyPolicy,
+                    hasTerms,
+                    isSslValid,
+                    hasContactInfo,
+                    hasCopyright,
+                    hasBrandInfo,
+                    hasGdprKvkkCompliance
+            );
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("The URL is not valid: " + url);
+        }
     }
 }

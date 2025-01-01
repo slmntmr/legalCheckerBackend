@@ -10,9 +10,12 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Tüm endpoint'ler için geçerli
-                .allowedOrigins("http://localhost:3000") // İzin verilen frontend URL'si
+                .allowedOrigins(
+                        "https://legalcheckerfrontend.vercel.app", // Vercel URL'si
+                        "http://localhost:3000" // Geliştirme için local
+                )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // İzin verilen HTTP metotları
                 .allowedHeaders("*") // Tüm header'lara izin ver
-                .allowCredentials(true); // Kimlik bilgilerini ilet (isteğe bağlı)
+                .allowCredentials(true); // Kimlik bilgilerini iletmek isterseniz true bırakabilirsiniz
     }
 }
