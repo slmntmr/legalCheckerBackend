@@ -1,5 +1,5 @@
 # Java 17 için uygun OpenJDK sürümünü kullan
-FROM openjdk:17-jdk-slim
+FROM openjdk:21-jdk-slim
 
 # Çalışma dizinini ayarla
 WORKDIR /app
